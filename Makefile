@@ -12,23 +12,24 @@
 
 NAME = libasm.a
 ASM = nasm
-ASFLAGS = -f 
-SRCS = ft_strlen.s # ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s ft_strdup.s
+ASFLAGS = -f elf64
+SRCS = ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s ft_strdup.s
 OBJS = $(SRCS:.s=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) 
-	$(ASM) $(ASFLAGS) $(OBJS) -o $(NAME).a
+$(NAME): $(OBJS)
+	ar rcs $(NAME) $(OBJS)
 
 %.o : %.s
-    $(ASM) $(ASFLAGS) -o $@ $<
+	$(ASM) $(ASFLAGS) $< -o $@
 
 clean:
-	rm *.o
+	rm -f $(OBJS)
 
-fclean: clean
-	rm -f $(NAME).a
+fclean:
+	rm -f $(OBJS)
+	rm -f $(NAME)
 
 re: fclean all
 
