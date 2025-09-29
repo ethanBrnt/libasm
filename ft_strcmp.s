@@ -1,20 +1,22 @@
 bits 64
-section .bss
-	buffer resb 100    ; réserve 100 octets pour stocker une chaîne
-
 section .text
-	global ft_strcpy
+	global ft_strcmp
 
-	ft_strcpy:
-		xor rax, rax
+	ft_strcmp:
+		xor rdx, rdx
 
 	.next_char:
-		mov al, [rdi + rax] ; al = registre tampon 
-		mov [buffer + rax], al
-		cmp byte [rdi + rax], 0 ; Compare current byte with 0
-		je .done               ; If 0, jump to done
-		inc rax                ; Increment RAX
-		jmp .next_char         ; Repeat
+		mov al, [rdi + rdx]
+		mov cl, [rsi + rdx]
+		cmp al, cl
+		jne .done
+		test al, al
+		je .done
+		inc rdx
+		jmp .next_char
 
 	.done:
+		movzx eax, al
+		movzx ecx, cl
+		sub eax, ecx
 		ret
